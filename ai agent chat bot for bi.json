@@ -1,0 +1,113 @@
+{
+  "name": "ai agent chat bot for bi",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant in answering the questions asked by the user\n\n## data to be remember\n\nBird Name Classification Website -Documentation\n\nWebsite: https://birdie-insight-project.lovable.app\n\nOverview:\n\nThis AI-powered website identifies bird species from your photos. After uploading a clear bird image, it analyzes the picture and returns likely species with confidence scores and details. For each match, you get the bird’s common name, scientific name, bird family, a confidence percentage, and a short description of the species.\n\nUser Manual :\n\nNavigate to the upload section: Open the website and scroll down past the main banner or hero image to find the Upload Bird Image area.\n\nUpload your image: You can upload in two ways. Either drag and drop your bird photo into the upload box (the box will highlight when you hover over it), or click the Browse Files button and\nselect the image from your device (then click Open).\n\nPreview and analyze: After uploading, your image will appear as a preview. Click the Identify Bird Species button to start the analysis. A loading animation will run for a few seconds (typically\n2–5 seconds) while the AI processes the image.\n\nView results: Once the analysis is complete, the results are displayed below. For each prediction, you will see the bird’s common name (in large text), the scientific name (in italics), and a confidence score shown by an animated progress bar. If the AI provides multiple guesses, each guess appears with its own score. The top match also includes the bird family information. \n\nGet more details: Click the Details button next to any prediction to open a modal window. This window shows a full description of that species and additional classification information. To close\nthe modal, click the X in the corner or click outside the box.\nTry another image: To identify another bird, remove the current image by hovering over it and clicking the red X button. Then upload a new image and repeat the process starting from step 2.\n\nFAQ :\n\nQ: What types of bird images work best?\nA: Clear, well-lit photos where the bird is the main subject give the best results. The bird should fill most of the frame and not be too far away. The model works with various angles and backgrounds, as long as the bird is visible and clear.\n\nQ: What file formats can I upload?\nA: You can upload any standard photo format. JPG, PNG, HEIC, and WebP files are supported (most common image types).\n\nQ: How accurate is the identification?\nA: The AI provides a confidence score (as a percentage) for each predicted species. Accuracy depends on factors like image quality, lighting, and how clearly the bird is visible. Lower confidence scores mean the identification is less certain. The tool typically lists the top few guesses so you can review multiple possibilities.\n\nQ: Can I upload multiple images at once?\nA: You can only analyze one image at a time. Once you remove the current image, you can upload another image and run the analysis again.\n\nQ: What information do I get about the bird?\nA: For each identified bird, you receive its common name, scientific name, bird family, a confidence score (percentage), and a brief description of the species.\n\nQ: Is my uploaded image stored?\nA: No. Images are processed in real time and are not saved on the server. Your photo is used only for analysis and is not permanently stored, ensuring your privacy.\n\nQ: Does it work on mobile devices?\nA: Yes. The website is fully responsive and works on smartphones, tablets, and desktop computers. You can use the same upload and identification process on any device.\n\nQ: What if the AI can't identify my bird?\nA: The AI will still provide its best guesses with a confidence score for each. If the bird is hard to identify, those scores may be lower, meaning the result is less certain. You can use the confidence percentages and the list of suggested species to judge which identification is likely correct.\n\n\n##instructions\n\n1.if the question asked by the user is related to the above data then find the answer and if not there exactly then answer accurately."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        0
+      ],
+      "id": "0cffe565-06a8-4ee0-ae59-658d8fbe4380",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        64,
+        240
+      ],
+      "id": "e8261855-d3ae-4312-897b-258e7969356f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "C0Tw1cLVqULfSule",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        240
+      ],
+      "id": "3bb77bad-2594-4fd7-95d8-bf7937bfa635",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -192,
+        -64
+      ],
+      "id": "acd6bebb-f5d5-4899-a9ff-845a47e6225a",
+      "name": "When chat message received",
+      "webhookId": "3513df0a-4d75-434a-82f2-5b88c78a691f"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "48f30aa4-2038-4a64-8654-9a8978a0c5e4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fb4da1fc73d58c02ef083eafbb11bcb5693435510eab92ffe09250c638ead8ca"
+  },
+  "id": "pvYEdg8XgSK6OwYS",
+  "tags": []
+}
